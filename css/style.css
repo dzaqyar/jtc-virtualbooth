@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@600;700&display=swap');
+
+/* =========================================
+   GLOBAL ROOT VARIABLES (WARNA & FONT JUSTISSIKA)
+   ========================================= */
+:root {
+    --bg-color: #ffffff; /* Background Putih Bersih */
+    --surface-color: rgba(255, 255, 255, 0.9);
+    --surface-light: rgba(240, 240, 240, 0.8);
+    --accent-color: #000000; /* Aksen Utama Hitam (Outline & Hover) */
+    --text-primary: #000000; /* Teks Hitam */
+    --text-secondary: #333333; /* Teks Abu-abu Gelap */
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --border-color: #000000; /* Garis Tepi (Outline) Hitam */
+    
+    /* Kombinasi Font Jurnalistik & Modern */
+    --font-main: 'Courier Prime', monospace; /* Kesan ketikan/koran untuk teks */
+    --font-heading: 'Space Grotesk', sans-serif; /* Tegas dan bersih untuk judul/tombol */
+    
+    --border-radius: 12px; /* Sudut Tumpul Standar */
+    --btn-radius: 50px; /* Sudut Sangat Tumpul (Kapsul) untuk Tombol */
+
+    /* CHORUM GRID SYSTEM VARIABLES (MOBILE DEFAULT) */
+    --container-padding: 16px;
+    --grid-gutter: 16px;
+}
+
+/* =========================================
+   RESPONSIVE GRID VARIABLES (MEDIA QUERIES)
+   ========================================= */
+@media (min-width: 768px) {
+    :root { --container-padding: 32px; --grid-gutter: 20px; }
+}
+@media (min-width: 1440px) {
+    :root { --container-padding: 120px; --grid-gutter: 24px; }
+}
+@media (min-width: 1920px) {
+    :root { --container-padding: 160px; }
+}
+
+/* =========================================
+   ANTI SCROLLBAR PUTIH BERKEDIP & EFEK HP
+   ========================================= */
+::-webkit-scrollbar { display: none; width: 0; height: 0; }
+*, html { 
+    margin: 0; padding: 0; box-sizing: border-box; 
+    font-family: var(--font-main); 
+    -webkit-tap-highlight-color: transparent; 
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+html, body { 
+    background-color: var(--bg-color); 
+    color: var(--text-primary); 
+    min-height: 100vh; width: 100%; max-width: 100%;
+    overflow-x: hidden; font-size: 16px; line-height: 1.6; 
+}
+
+/* =========================================
+   TYPOGRAPHY HIERARCHY (RASIO EMAS 1.618)
+   ========================================= */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+h1 { font-size: 2.625rem; } 
+h2 { font-size: 1.625rem; } 
+h3 { font-size: 1.25rem; }  
+p { 
+    margin-bottom: 1rem; color: var(--text-secondary); text-transform: none !important; 
+}
+
+/* =========================================
+   CHORUM CUSTOM GRID SYSTEM (TETAP AMAN)
+   ========================================= */
+.ch-container { width: 100%; margin-right: auto; margin-left: auto; padding-right: var(--container-padding); padding-left: var(--container-padding); }
+.ch-row { display: flex; flex-wrap: wrap; margin-top: calc(var(--grid-gutter) * -1); margin-right: calc(var(--grid-gutter) * -0.5); margin-left: calc(var(--grid-gutter) * -0.5); }
+.ch-row > * { box-sizing: border-box; flex-shrink: 0; width: 100%; max-width: 100%; padding-right: calc(var(--grid-gutter) * 0.5); padding-left: calc(var(--grid-gutter) * 0.5); margin-top: var(--grid-gutter); }
+
+.ch-col-12 { flex: 0 0 auto; width: 100%; }
+.ch-col-6  { flex: 0 0 auto; width: 50%; }
+
+@media (min-width: 768px) {
+    .ch-col-md-4  { flex: 0 0 auto; width: 33.333333%; }
+    .ch-col-md-5  { flex: 0 0 auto; width: 41.666667%; }
+    .ch-col-md-6  { flex: 0 0 auto; width: 50%; }
+    .ch-col-md-7  { flex: 0 0 auto; width: 58.333333%; }
+    .ch-col-md-8  { flex: 0 0 auto; width: 66.666667%; }
+    .ch-col-md-12 { flex: 0 0 auto; width: 100%; }
+}
+@media (min-width: 1440px) {
+    .ch-col-lg-3  { flex: 0 0 auto; width: 25%; }
+    .ch-col-lg-4  { flex: 0 0 auto; width: 33.333333%; }
+    .ch-col-lg-5  { flex: 0 0 auto; width: 41.666667%; }
+    .ch-col-lg-6  { flex: 0 0 auto; width: 50%; }
+    .ch-col-lg-7  { flex: 0 0 auto; width: 58.333333%; }
+    .ch-col-lg-8  { flex: 0 0 auto; width: 66.666667%; }
+    .ch-col-lg-9  { flex: 0 0 auto; width: 75%; }
+    .ch-col-lg-12 { flex: 0 0 auto; width: 100%; }
+}
+
+/* =========================================
+   RESPONSIVE VIDEO BACKGROUND
+   ========================================= */
+.vid-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: 0; }
+.desktop-vid { display: block; }
+.mobile-vid { display: none; }
+@media (max-width: 768px) {
+    .desktop-vid { display: none; }
+    .mobile-vid { display: block; }
+}
+
+/* =========================================
+   LANDING PAGE BUTTON (POSISI TENGAH)
+   ========================================= */
+.landing-content {
+    position: fixed;
+    /* 🛠️ KALIBRASI POSISI TOMBOL DI SINI 🛠️ */
+    /* Jika ingin sedikit lebih ke bawah, ubah top: 50% menjadi misalnya top: 60% atau 70% */
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; 
+    pointer-events: none; 
+}
+
+.btn-gas-foto {
+    pointer-events: auto; 
+    width: 100%;
+    max-width: 350px;
+    padding: 18px 20px;
+    font-size: 1.2rem;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    
+    /* Efek Jurnalistik/Sketch: Putih, Garis Hitam, Tulisan Hitam */
+    background: #ffffff;
+    color: #000000; 
+    border: 2px solid #000000;
+    border-radius: var(--btn-radius);
+    
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    font-weight: bold;
+    outline: none;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 1); /* Efek Retro/Sketch Shadow */
+    transition: all 0.3s ease;
+}
+
+.btn-gas-foto:hover, .btn-gas-foto:active {
+    /* Perubahan saat disorot/ditekan: Background Hitam, Garis Putih, Tulisan Putih */
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 1);
+    transform: translateY(4px) translateX(4px); /* Efek tombol ditekan */
+}
+
+/* =========================================
+   GLOBAL COMPONENTS (STYLE BARU)
+   ========================================= */
+.glass-panel {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background: #ffffff;
+    color: #000000; 
+    border: 2px solid #000000;
+    padding: 14px 24px;
+    border-radius: var(--btn-radius);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    width: 100%;
+    font-weight: bold;
+    outline: none;
+}
+.btn-primary:hover, .btn-primary:active {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+    padding: 14px 24px;
+    border-radius: var(--btn-radius);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+    outline: none;
+}
+.btn-secondary:hover, .btn-secondary:active {
+    background: #000000;
+    color: #ffffff;
+    border-color: #ffffff;
+}

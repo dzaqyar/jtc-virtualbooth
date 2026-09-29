@@ -1,0 +1,26 @@
+{
+  "is_event_active": true,
+  "status": "success",
+  "is_oprec_active": true,
+  "oprec_link": "https://docs.google.com/forms/d/e/1FAIpQLSdf_3Ep4RHXeWhGzCriz7A3Ii8BmmOwb2ZECdmiHxSKB_kIKg/viewform",
+  "frames": [
+    {
+      "id": "frame_justissica_01",
+      "name": "JTC Frame 3 Slot",
+      "slots": 3,
+      "url": "assets/images/frames/frame1-justissica-3slot.png"
+    },
+    {
+      "id": "frame_justissica_02",
+      "name": "JTC Frame 3 Slot",
+      "slots": 3,
+      "url": "assets/images/frames/frame2-justissica-3slot.png"
+    },
+    {
+      "id": "frame_justissica_01",
+      "name": "JTC Frame 3 Slot",
+      "slots": 3,
+      "url": "assets/images/frames/frame3-justissica-3slot.png"
+    }
+    ]
+}

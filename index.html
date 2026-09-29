@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- 1. Kode Verifikasi Kepemilikan Google (Tetap dibiarkan agar tidak merusak Search Console Anda) -->
+    <meta name="google-site-verification" content="DzEPkKl8vTggahoQ4Iz3ntzmMo2LAuad-jOBYB0DYqU" />
+
+    <!-- 2. Tag SEO Utama JustikaVirtualbooth -->
+    <title>JustikaVirtualbooth - LPM Justissika</title>
+    <meta name="description" content="Abadikan momenmu bersama LPM Justissika FHIP UMS!">
+    <meta name="keywords" content="justikavirtualbooth, lpm justissika, fhip ums, virtual photobooth, bilik lensa">
+    <meta name="author" content="LPM Justissika">
+
+    <!-- 3. Favicon Logo Baru -->
+    <link rel="icon" href="assets/images/logo-justissika.png" type="image/png">
+
+    <!-- 4. Tag Open Graph (Tampilan saat link disebar di WA/IG) -->
+    <meta property="og:title" content="JustikaVirtualbooth - LPM Justissika">
+    <meta property="og:description" content="Abadikan momenmu bersama LPM Justissika FHIP UMS!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chorumbooth.dpdns.org/"> 
+    <meta property="og:image" content="https://chorumbooth.dpdns.org/assets/images/logo-justissika.png"> 
+
+    <!-- 5. Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://chorumbooth.dpdns.org/",
+      "name": "JustikaVirtualbooth",
+      "image": "https://chorumbooth.dpdns.org/assets/images/logo-justissika.png"
+    }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- 6. Style Khusus Pop-Up Iklan (Modal) -->
+    <style>
+        #adModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background-color: rgba(0, 0, 0, 0.85); /* Latar belakang gelap transparan */
+            z-index: 9999;
+            display: none; /* Disembunyikan secara default, diatur JS nanti */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .ad-content {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 1);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .ad-media {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #000;
+            margin-bottom: 15px;
+        }
+        .btn-close-ad {
+            background: #000000;
+            color: #ffffff;
+            border: 2px solid #000000;
+            padding: 12px 20px;
+            border-radius: var(--btn-radius);
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        .btn-close-ad:hover {
+            background: #ffffff;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================
+         POP-UP IKLAN HANYA TAMPIL 1 KALI (SESSION)
+         ========================================= -->
+    <div id="adModal">
+        <div class="ad-content">
+            <!-- IKLAN VIDEO LOOP -->
+            <video class="ad-media" autoplay loop muted playsinline>
+                <source src="assets/images/Public Space.webm" type="video/webm">
+            </video>
+
+            <!-- 
+            🛠️ OPSI IKLAN GAMBAR (Jika tidak pakai video, hapus tag video di atas, dan hilangkan tanda komentar '<!--' pada tag img di bawah ini) 
+            <img class="ad-media" src="assets/images/Public Space.png" alt="Informasi Justissika"> 
+            -->
+
+            <button class="btn-close-ad" id="btnCloseAd">Lanjut ke booth</button>
+        </div>
+    </div>
+
+    <!-- =========================================
+         BACKGROUND ASET BARU (SKETCH)
+         ========================================= -->
+    <!-- Video khusus Layar Besar (Desktop/Laptop) -->
+    <video class="vid-bg desktop-vid" autoplay loop muted playsinline>
+        <source src="assets/images/sketch-bg-desktop.webm" type="video/webm">
+    </video>
+
+    <!-- Video khusus HP (Mobile) -->
+    <video class="vid-bg mobile-vid" autoplay loop muted playsinline>
+        <source src="assets/images/sketch-bg-mobile.webm" type="video/webm">
+    </video>
+
+    <!-- =========================================
+         TOMBOL UTAMA (Sudah di tengah berkat CSS)
+         ========================================= -->
+    <div class="landing-content">
+        <a href="guest.html" class="btn-primary btn-gas-foto">MULAI LIPUTAN!</a>
+    </div>
+
+    <!-- =========================================
+         SCRIPT PENGENDALI POP-UP IKLAN
+         ========================================= -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const adModal = document.getElementById('adModal');
+            const btnCloseAd = document.getElementById('btnCloseAd');
+
+            // Mengecek apakah tamu sudah melihat iklan di sesi ini
+            const hasSeenAd = sessionStorage.getItem('justikaAdShown');
+
+            if (!hasSeenAd) {
+                // Jika belum lihat, tampilkan Pop-up
+                adModal.style.display = 'flex';
+            }
+
+            // Aksi saat tombol "Lanjut ke booth" ditekan
+            btnCloseAd.addEventListener('click', function() {
+                adModal.style.display = 'none'; // Sembunyikan iklan
+                // Simpan data di session agar tidak muncul lagi saat di-refresh/kembali ke halaman ini
+                sessionStorage.setItem('justikaAdShown', 'true'); 
+            });
+        });
+    </script>
+</body>
+</html>
