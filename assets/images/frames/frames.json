@@ -3,6 +3,7 @@
   "status": "success",
   "is_oprec_active": true,
   "oprec_link": "https://docs.google.com/forms/d/e/1FAIpQLSdf_3Ep4RHXeWhGzCriz7A3Ii8BmmOwb2ZECdmiHxSKB_kIKg/viewform",
+  "koran_link": "https://lpmjustissica.wordpress.com/category/koran/",
   "frames": [
     {
       "id": "frame_justissica_01",
@@ -22,5 +23,5 @@
       "slots": 3,
       "url": "assets/images/frames/frame3-justissica-3slot.png"
     }
-    ]
+  ]
 }
