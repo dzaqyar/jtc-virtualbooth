@@ -86,7 +86,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const result = await res.json();
         
         if (result.is_event_active !== true) {
-            alert("Maaf, Event Photobooth CHORUM saat ini sedang ditutup.");
+            alert("Maaf, Event JustikaVirtualBooth saat ini sedang ditutup.");
             window.location.href = 'index.html'; 
             return;
         }
@@ -98,10 +98,10 @@ window.addEventListener('DOMContentLoaded', async () => {
             updateFrameUI();
 
             // --- LOGIKA TOMBOL OPREC ---
-            const btnJoinChorum = document.getElementById('btnJoinChorum');
-            if (btnJoinChorum && result.is_oprec_active === true && result.oprec_link) {
-                btnJoinChorum.style.display = 'block'; 
-                btnJoinChorum.href = result.oprec_link; 
+            const btnJoinJustissica = document.getElementById('btnJoinJustissica');
+            if (btnJoinJustissica && result.is_oprec_active === true && result.oprec_link) {
+                btnJoinJustissica.style.display = 'block'; 
+                btnJoinJustissica.href = result.oprec_link; 
             }
         }
     } catch(error) { 
