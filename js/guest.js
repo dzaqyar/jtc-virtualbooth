@@ -86,7 +86,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const result = await res.json();
         
         if (result.is_event_active !== true) {
-            alert("Maaf, Event ini sedang ditutup.");
+            alert("Maaf, Event Photobooth LPM Justissika saat ini sedang ditutup.");
             window.location.href = 'index.html'; 
             return;
         }
@@ -97,11 +97,18 @@ window.addEventListener('DOMContentLoaded', async () => {
             btnConfirmFrame.disabled = false;
             updateFrameUI();
 
-            // --- LOGIKA TOMBOL OPREC ---
-            const btnJoinJustissica = document.getElementById('btnJoinJustissica');
-            if (btnJoinJustissica && result.is_oprec_active === true && result.oprec_link) {
-                btnJoinJustissica.style.display = 'block'; 
-                btnJoinJustissica.href = result.oprec_link; 
+            // --- LOGIKA TOMBOL OPREC & KORAN (DINAMIS DARI JSON) ---
+            const btnJoinChorum = document.getElementById('btnJoinChorum');
+            const btnKoran = document.getElementById('btnKoran');
+
+            if (btnJoinChorum && result.is_oprec_active === true && result.oprec_link) {
+                btnJoinChorum.style.display = 'block'; 
+                btnJoinChorum.href = result.oprec_link; 
+            }
+            
+            if (btnKoran && result.koran_link) {
+                btnKoran.style.display = 'block'; 
+                btnKoran.href = result.koran_link; 
             }
         }
     } catch(error) { 
@@ -675,7 +682,7 @@ async function generateGIF() {
     let textPosX = canvas.width; // Posisi awal teks (di luar kanan layar)
 
     const logoImg = new Image();
-    logoImg.src = 'assets/images/logo-justissica.png'; // Pastikan nama file ini benar
+    logoImg.src = 'assets/images/logo-justissika.png';
     await new Promise(r => { logoImg.onload = r; logoImg.onerror = r; });
 
     let currentPhotoIndex = 0;
@@ -693,7 +700,6 @@ async function generateGIF() {
         if (logoImg.naturalWidth > 0) {
             const logoW = 100;
             const logoH = logoW * (logoImg.naturalHeight / logoImg.naturalWidth);
-            // Posisikan logo sedikit di atas ticker agar tidak tertumpuk
             ctx.drawImage(logoImg, canvas.width - logoW - 15, canvas.height - logoH - TICKER_HEIGHT - 10, logoW, logoH);
         }
 
