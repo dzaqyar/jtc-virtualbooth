@@ -628,7 +628,7 @@ async function generateQRCode(compressedBase64) {
 }
 
 // ==========================================
-// 7. GENERATOR GIF (LOKAL)
+// 7. GENERATOR GIF (LOKAL) + NEWS TICKER LPM
 // ==========================================
 async function generateGIF() {
     let gifFrames = [];
@@ -637,28 +637,90 @@ async function generateGIF() {
     canvas.height = 450;
     const ctx = canvas.getContext('2d');
 
+    // ---------------------------------------------------------
+    // ⚙️ PENGATURAN KALIBRASI NEWS TICKER (Ubah di sini) ⚙️
+    // ---------------------------------------------------------
+    const TICKER_FONT = "bold 20px 'Courier New', Courier, monospace"; // Font ala mesin tik berita
+    const TICKER_TEXT_COLOR = "#FFFFFF"; // Warna teks putih
+    const TICKER_BG_COLOR = "rgba(0, 0, 0, 0.7)"; // Latar belakang hitam transparan
+    const TICKER_HEIGHT = 40; // Tinggi kotak hitam berita
+    const TICKER_SPEED = 25; // Kecepatan gerak teks (semakin besar semakin cepat)
+    const TICKER_POSITION_Y = canvas.height - TICKER_HEIGHT; // Posisi: menempel di bawah (bisa diubah)
+    
+    // Daftar Berita Kocak LPM (Akan dipilih acak setiap kali GIF dibuat)
+    const TICKER_MESSAGES = [
+        "BREAKING NEWS: Rapat Redaksi LPM Berubah Menjadi Ajang Curhat Terselubung Akibat Revisi Proposal...",
+        "SEKILAS INFO: Mahasiswa Semester 7 Ditemukan Ketiduran Saat Simulasi Sidang Semu PP Perdata...",
+        "BERITA TERKINI: Kehabisan Ide Liputan, Reporter Wawancarai Kucing Kampus Terkait Kenaikan UKT...",
+        "HEADLINE: Kehilangan Flashdisk Berisi Draf Skripsi, Seorang Mahasiswa Mengaku Siap Pindah Jurusan...",
+        "LIPUTAN KHUSUS: Mengaku Sedang Riset BEM, Mahasiswa Ini Ketahuan Hanya Numpang WiFi di Sekretariat...",
+        "INFO KAMPUS: Parkiran FH Penuh, Mahasiswa Terpaksa Parkir Motor di Hati Mantan...",
+        "LIVE REPORT: Oprec LPM Justissica Diserbu Maba, Kating Dilaporkan Ketar-ketir..."
+    ];
+    // ---------------------------------------------------------
+
+    // Pilih satu berita secara acak
+    const randomNews = TICKER_MESSAGES[Math.floor(Math.random() * TICKER_MESSAGES.length)];
+    
+    // Hitung total frame (misal: 10 frame, karena interval gifshot nanti 0.5s atau sesuaikan)
+    // Untuk membuat efek berjalan mulus, kita buat jumlah frame yang cukup
+    const numGifFrames = capturedPhotos.length * 4; // Setiap foto diulang 4 frame agar teks sempat jalan
+    let textPosX = canvas.width; // Posisi awal teks (di luar kanan layar)
+
     const logoImg = new Image();
     logoImg.src = 'assets/images/logo-justissica.png';
     await new Promise(r => { logoImg.onload = r; logoImg.onerror = r; });
 
-    for (let i = 0; i < capturedPhotos.length; i++) {
+    // Loop untuk membuat frame GIF
+    let currentPhotoIndex = 0;
+    
+    for (let frameNum = 0; frameNum < numGifFrames; frameNum++) {
+        // Ganti foto setiap 4 frame
+        currentPhotoIndex = Math.floor(frameNum / 4) % capturedPhotos.length;
+        
         const img = new Image();
-        img.src = capturedPhotos[i];
+        img.src = capturedPhotos[currentPhotoIndex];
         await new Promise(r => img.onload = r);
 
+        // 1. Gambar latar foto
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
+        // 2. Gambar Logo LPM Justissica
         if (logoImg.naturalWidth > 0) {
             const logoW = 100;
             const logoH = logoW * (logoImg.naturalHeight / logoImg.naturalWidth);
-            ctx.drawImage(logoImg, canvas.width - logoW - 15, canvas.height - logoH - 15, logoW, logoH);
+            // Posisikan logo sedikit di atas ticker agar tidak tertumpuk
+            ctx.drawImage(logoImg, canvas.width - logoW - 15, canvas.height - logoH - TICKER_HEIGHT - 10, logoW, logoH);
         }
+
+        // 3. Gambar Kotak Background Ticker (Berita)
+        ctx.fillStyle = TICKER_BG_COLOR;
+        ctx.fillRect(0, TICKER_POSITION_Y, canvas.width, TICKER_HEIGHT);
+
+        // 4. Gambar Teks Ticker Berjalan
+        ctx.font = TICKER_FONT;
+        ctx.fillStyle = TICKER_TEXT_COLOR;
+        ctx.textBaseline = "middle";
+        
+        // Geser teks ke kiri
+        textPosX -= TICKER_SPEED; 
+        
+        // Gambar teksnya
+        ctx.fillText("🔴 " + randomNews, textPosX, TICKER_POSITION_Y + (TICKER_HEIGHT / 2));
+
+        // Simpan frame ini
         gifFrames.push(canvas.toDataURL('image/jpeg', 0.7));
     }
 
+    // Proses pembuatan GIF dengan gifshot
+    // Interval diperkecil jadi 0.15 agar animasinya lebih mulus dan teks jalannya terlihat halus
     gifshot.createGIF({
-        images: gifFrames, gifWidth: canvas.width, gifHeight: canvas.height, interval: 0.5, numFrames: gifFrames.length
+        images: gifFrames, 
+        gifWidth: canvas.width, 
+        gifHeight: canvas.height, 
+        interval: 0.15, // Dibuat lebih cepat agar frame ticker tidak patah-patah
+        numFrames: gifFrames.length
     }, function (obj) {
         if (!obj.error) {
             const gifUrl = obj.image;
