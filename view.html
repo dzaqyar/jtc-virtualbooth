@@ -130,7 +130,7 @@
         <div class="photo-frame" id="photoFrame">
             <div class="loading-state" id="loadingState">
                 <div class="spinner"></div>
-                <span>Mengambil arsip dari ruang redaksi...</span>
+                <span>Mengambil gambar dari ruang redaksi...</span>
             </div>
             <img id="guestPhoto" src="" alt="Arsip JustikaVirtualbooth">
         </div>
@@ -141,7 +141,7 @@
 
         <!-- 🛠️ GANTI LINK INSTAGRAM DI BAWAH INI JIKA PERLU 🛠️ -->
         <a href="https://www.instagram.com/lpm_justissica?stkn=ZjE0azVxcXJrd25v" target="_blank" class="btn-action btn-ig">
-            Follow & Tag @justissika 📰
+            Follow & Tag @justissica 📰
         </a>
         
         <a href="index.html" class="btn-action btn-home">
@@ -169,13 +169,13 @@
                         guestPhoto.style.display = 'block';
                     };
                     guestPhoto.onerror = () => {
-                        loadingState.innerHTML = "❌<br>Duh, arsip gagal dimuat.<br>Mungkin sudah dihapus dari server redaksi.";
+                        loadingState.innerHTML = "❌<br>Duh, gagal dimuat jhont.";
                     };
                 } catch (e) {
                     loadingState.innerHTML = "⚠️<br>Data QR tidak valid atau rusak.";
                 }
             } else {
-                loadingState.innerHTML = "⚠️<br>URL tidak valid. Arsip tidak ditemukan.";
+                loadingState.innerHTML = "⚠️<br>URL tidak valid. Gambar tidak ditemukan.";
             }
         });
     </script>
