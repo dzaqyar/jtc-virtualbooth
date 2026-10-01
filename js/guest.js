@@ -86,7 +86,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const result = await res.json();
         
         if (result.is_event_active !== true) {
-            alert("Maaf, Event JustikaVirtualBooth saat ini sedang ditutup.");
+            alert("Maaf, Event ini sedang ditutup.");
             window.location.href = 'index.html'; 
             return;
         }
@@ -640,14 +640,16 @@ async function generateGIF() {
     // ---------------------------------------------------------
     // ⚙️ PENGATURAN KALIBRASI NEWS TICKER (Ubah di sini) ⚙️
     // ---------------------------------------------------------
-    const TICKER_FONT = "bold 20px 'Courier New', Courier, monospace"; // Font ala mesin tik berita
-    const TICKER_TEXT_COLOR = "#FFFFFF"; // Warna teks putih
-    const TICKER_BG_COLOR = "rgba(0, 0, 0, 0.7)"; // Latar belakang hitam transparan
-    const TICKER_HEIGHT = 40; // Tinggi kotak hitam berita
-    const TICKER_SPEED = 25; // Kecepatan gerak teks (semakin besar semakin cepat)
-    const TICKER_POSITION_Y = canvas.height - TICKER_HEIGHT; // Posisi: menempel di bawah (bisa diubah)
+    const TICKER_FONT = "bold 20px 'Courier New', Courier, monospace"; 
+    const TICKER_TEXT_COLOR = "#FFFFFF"; 
+    const TICKER_BG_COLOR = "rgba(0, 0, 0, 0.7)"; 
+    const TICKER_HEIGHT = 40; 
+    const TICKER_POSITION_Y = canvas.height - TICKER_HEIGHT; 
     
-    // Daftar Berita Kocak LPM (Akan dipilih acak setiap kali GIF dibuat)
+    // PENGATURAN DURASI: 
+    // Berapa frame (kedipan) untuk 1 foto. Makin besar angkanya = GIF makin panjang & jalannya teks makin santai/mulus.
+    const FRAMES_PER_PHOTO = 8; 
+    
     const TICKER_MESSAGES = [
         "BREAKING NEWS: Rapat Redaksi LPM Berubah Menjadi Ajang Curhat Terselubung Akibat Revisi Proposal...",
         "SEKILAS INFO: Mahasiswa Semester 7 Ditemukan Ketiduran Saat Simulasi Sidang Semu PP Perdata...",
@@ -659,34 +661,35 @@ async function generateGIF() {
     ];
     // ---------------------------------------------------------
 
-    // Pilih satu berita secara acak
-    const randomNews = TICKER_MESSAGES[Math.floor(Math.random() * TICKER_MESSAGES.length)];
+    const randomNews = "🔴 " + TICKER_MESSAGES[Math.floor(Math.random() * TICKER_MESSAGES.length)];
     
-    // Hitung total frame (misal: 10 frame, karena interval gifshot nanti 0.5s atau sesuaikan)
-    // Untuk membuat efek berjalan mulus, kita buat jumlah frame yang cukup
-    const numGifFrames = capturedPhotos.length * 4; // Setiap foto diulang 4 frame agar teks sempat jalan
+    // 1. Ukur panjang teks secara otomatis agar tahu jarak tempuhnya
+    ctx.font = TICKER_FONT;
+    const textWidth = ctx.measureText(randomNews).width;
+
+    // 2. Hitung total frame dan kecepatan ideal
+    const numGifFrames = capturedPhotos.length * FRAMES_PER_PHOTO; 
+    // Rumus Kecepatan = (Lebar Layar + Lebar Teks) dibagi Total Frame
+    const TICKER_SPEED = (canvas.width + textWidth) / numGifFrames; 
+    
     let textPosX = canvas.width; // Posisi awal teks (di luar kanan layar)
 
     const logoImg = new Image();
-    logoImg.src = 'assets/images/logo-justissica.png';
+    logoImg.src = 'assets/images/logo-justissica.png'; // Pastikan nama file ini benar
     await new Promise(r => { logoImg.onload = r; logoImg.onerror = r; });
 
-    // Loop untuk membuat frame GIF
     let currentPhotoIndex = 0;
     
     for (let frameNum = 0; frameNum < numGifFrames; frameNum++) {
-        // Ganti foto setiap 4 frame
-        currentPhotoIndex = Math.floor(frameNum / 4) % capturedPhotos.length;
+        currentPhotoIndex = Math.floor(frameNum / FRAMES_PER_PHOTO) % capturedPhotos.length;
         
         const img = new Image();
         img.src = capturedPhotos[currentPhotoIndex];
         await new Promise(r => img.onload = r);
 
-        // 1. Gambar latar foto
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // 2. Gambar Logo LPM Justissica
         if (logoImg.naturalWidth > 0) {
             const logoW = 100;
             const logoH = logoW * (logoImg.naturalHeight / logoImg.naturalWidth);
@@ -694,32 +697,25 @@ async function generateGIF() {
             ctx.drawImage(logoImg, canvas.width - logoW - 15, canvas.height - logoH - TICKER_HEIGHT - 10, logoW, logoH);
         }
 
-        // 3. Gambar Kotak Background Ticker (Berita)
         ctx.fillStyle = TICKER_BG_COLOR;
         ctx.fillRect(0, TICKER_POSITION_Y, canvas.width, TICKER_HEIGHT);
 
-        // 4. Gambar Teks Ticker Berjalan
         ctx.font = TICKER_FONT;
         ctx.fillStyle = TICKER_TEXT_COLOR;
         ctx.textBaseline = "middle";
         
-        // Geser teks ke kiri
         textPosX -= TICKER_SPEED; 
         
-        // Gambar teksnya
-        ctx.fillText("🔴 " + randomNews, textPosX, TICKER_POSITION_Y + (TICKER_HEIGHT / 2));
+        ctx.fillText(randomNews, textPosX, TICKER_POSITION_Y + (TICKER_HEIGHT / 2));
 
-        // Simpan frame ini
         gifFrames.push(canvas.toDataURL('image/jpeg', 0.7));
     }
 
-    // Proses pembuatan GIF dengan gifshot
-    // Interval diperkecil jadi 0.15 agar animasinya lebih mulus dan teks jalannya terlihat halus
     gifshot.createGIF({
         images: gifFrames, 
         gifWidth: canvas.width, 
         gifHeight: canvas.height, 
-        interval: 0.15, // Dibuat lebih cepat agar frame ticker tidak patah-patah
+        interval: 0.15, // Kecepatan pergantian frame
         numFrames: gifFrames.length
     }, function (obj) {
         if (!obj.error) {
